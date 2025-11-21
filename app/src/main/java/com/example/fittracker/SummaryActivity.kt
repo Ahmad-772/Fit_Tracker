@@ -24,21 +24,23 @@ class SummaryActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val selectedDate = intent.getLongExtra("SELECTED_DATE", 0L)
+        val selecteddate = intent.getLongExtra("SELECTED_DATE", 0L)
 
         setContent {
-            SummaryScreen(viewModel, selectedDate)
+            SummaryScreen(viewModel, selecteddate)
         }
     }
 }
 
+fun AppDatabase.Companion.getDatabase(activity: SummaryActivity) {}
+
 @Composable
-fun SummaryScreen(viewModel: FitnessViewModel, selectedDate: Long) {
-    val totalDuration by viewModel.getTotalDurationForDate(selectedDate).collectAsState(initial = 0)
-    val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.US)
+fun SummaryScreen(viewModel: FitnessViewModel, selecteddate: Long) {
+    val totalduration by viewModel.getTotalDurationForDate(selecteddate).collectAsState(initial = 0)
+    val dateformat = SimpleDateFormat("dd/MM/yyyy", Locale.US)
 
     Column(modifier = Modifier.padding(16.dp)) {
-        Text(text = "Summary for: ${dateFormat.format(Date(selectedDate))}")
-        Text(text = "Total Duration: $totalDuration minutes")
+        Text(text = "Summary for: ${dateformat.format(Date(selecteddate))}")
+        Text(text = "Total Duration: ${totalduration ?: 0} minutes")
     }
 }
